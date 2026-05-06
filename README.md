@@ -1,68 +1,40 @@
 # thread-algo-search-lab
 
-`thread-algo-search-lab` treats algorithms as a local verification problem. The OCaml implementation is intentionally narrow, but the fixtures and notes make the behavior explicit.
+`thread-algo-search-lab` keeps a focused OCaml implementation around algorithms. The project goal is to package an OCaml local lab for search analysis with capacity fixtures, allocation and spill reports, and documented operating limits.
 
-## Thread Algo Search Lab Checkpoints
+## Purpose
 
-Treat the compact fixture as the contract and the extended examples as a scratchpad. The code should stay boring enough that a change in behavior is obvious from the test output.
+This is intentionally local and self-contained so it can be inspected without credentials, services, or seeded history.
 
-## What This Is For
+## Thread Algo Search Lab Review Notes
 
-This project keeps the domain idea close to the tests. That makes it useful as a reference implementation, a small experiment, or a starting point for a more specialized tool.
+`recovery` and `edge` are the cases worth reading first. They show the optimistic and cautious ends of the fixture.
 
-## Architecture Notes
+## What Is Covered
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The OCaml implementation keeps the data record and functions small enough to load directly in the test file.
+- `fixtures/domain_review.csv` adds cases for input width and search depth.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/thread-algo-search-walkthrough.md` walks through the case spread.
+- The OCaml code includes a review path for `complexity` and `boundary pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Case Study
+## Implementation Notes
 
-`pressure` is the first example I would inspect because it lands on the `review` path with a score of 96. The broader file also keeps `degraded` at -6 and `surge` at 224, which gives the model a useful low-to-high spread.
+The implementation keeps the scoring rule plain: reward signal and confidence, preserve slack, penalize drag, then classify the result into a review lane.
 
-## Useful Pieces
+The OCaml implementation avoids hidden state so fixture changes are easy to reason about.
 
-- Uses fixture data to keep complexity tradeoffs changes visible in code review.
-- Includes extended examples for golden cases, including `surge` and `degraded`.
-- Documents boundary checks tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-
-## Tooling
-
-Install OCaml and run the commands from the repository root. The project does not need credentials or a hosted service.
-
-## Quality Gate
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Project Layout
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Scope
-
-The examples cover useful edges, not every edge. A larger version would add malformed-input tests, richer reports, and deeper domain parsers.
-
-## Expansion Ideas
-
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add one more algorithms fixture that focuses on a malformed or borderline input.
-
-## Local Workflow
+## Command
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Audit Path
+
+The same command runs the local verification path. The highest-scoring domain case is `recovery` at 241, which lands in `ship`. The most cautious case is `edge` at 133, which lands in `watch`.
+
+## Limits
+
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.

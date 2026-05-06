@@ -1,0 +1,73 @@
+{
+  "repo": "thread-algo-search-lab",
+  "language": "OCaml",
+  "category": "Algorithms",
+  "goal": "Package an OCaml local lab for search analysis with capacity fixtures, allocation and spill reports, and documented operating limits.",
+  "review_model": {
+    "terms": [
+      "input width",
+      "search depth",
+      "boundary pressure",
+      "complexity"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "input width",
+      "signal": 57,
+      "slack": 21,
+      "drag": 17,
+      "confidence": 50,
+      "score": 134,
+      "lane": "watch"
+    },
+    {
+      "name": "stress",
+      "focus": "search depth",
+      "signal": 50,
+      "slack": 37,
+      "drag": 18,
+      "confidence": 58,
+      "score": 141,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "boundary pressure",
+      "signal": 46,
+      "slack": 25,
+      "drag": 23,
+      "confidence": 85,
+      "score": 133,
+      "lane": "watch"
+    },
+    {
+      "name": "recovery",
+      "focus": "complexity",
+      "signal": 69,
+      "slack": 50,
+      "drag": 13,
+      "confidence": 92,
+      "score": 241,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "input width",
+      "signal": 69,
+      "slack": 37,
+      "drag": 31,
+      "confidence": 56,
+      "score": 138,
+      "lane": "watch"
+    }
+  ]
+}
